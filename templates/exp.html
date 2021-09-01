@@ -1,0 +1,390 @@
+{% extends "experiment_wrapper.html" %}
+
+{% block title %} Memory for faces {% endblock %}
+
+{% block extra_head %}
+
+<script src="{{url_for('static', filename='jspsych/jspsych.js')}}" type="text/javascript"></script>
+    
+<script src="{{url_for('static', filename='jspsych/plugins/jspsych-html-keyboard-response.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='jspsych/plugins/jspsych-image-keyboard-response.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='jspsych/plugins/jspsych-survey-text.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='jspsych/plugins/jspsych-external-html.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='jspsych/plugins/jspsych-categorize-html.js')}}" type="text/javascript"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='jspsych/css/jspsych.css')}}" type="text/css"></link>
+<link rel="stylesheet" href="{{url_for('static', filename='custom/custom_formatting.css')}}" type="text/css"></link>
+<script src="{{url_for('static', filename='config.js')}}" type="text/javascript"></link>
+<script src="{{url_for('static', filename='custom/math-distractor.js')}}" type="text/javascript"></script>
+
+{% endblock %}
+
+{% block after_body %}
+
+<script>
+
+/* - - - - ASSEMBLE STIMULI - - - - */
+
+var stimuli = ['ffhq-0389.jpg', 'ffhq-0821.jpg', 'ffhq-1524.jpg', 'ffhq-1518.jpg', 'ffhq-0160.jpg', 'ffhq-1493.jpg', 'ffhq-1444.jpg', 'ffhq-0772.jpg', 'ffhq-1691.jpg', 'ffhq-0001.jpg', 'ffhq-0968.jpg', 'ffhq-0940.jpg', 'ffhq-1280.jpg', 'ffhq-1900.jpg', 'ffhq-1043.jpg', 'ffhq-0375.jpg', 'ffhq-0836.jpg', 'ffhq-0188.jpg', 'ffhq-1453.jpg', 'ffhq-1645.jpg', 'ffhq-1678.jpg', 'ffhq-1122.jpg', 'ffhq-0980.jpg', 'ffhq-1334.jpg', 'ffhq-1452.jpg', 'ffhq-0943.jpg', 'ffhq-0189.jpg', 'ffhq-1724.jpg', 'ffhq-0402.jpg', 'ffhq-1720.jpg', 'ffhq-0748.jpg', 'ffhq-0204.jpg', 'ffhq-0238.jpg', 'ffhq-1133.jpg', 'ffhq-0205.jpg', 'ffhq-0211.jpg', 'ffhq-0985.jpg', 'ffhq-0991.jpg', 'ffhq-0007.jpg', 'ffhq-1251.jpg', 'ffhq-0629.jpg', 'ffhq-1090.jpg', 'ffhq-1084.jpg', 'ffhq-1247.jpg', 'ffhq-0777.jpg', 'ffhq-0987.jpg', 'ffhq-0213.jpg', 'ffhq-0549.jpg', 'ffhq-1124.jpg', 'ffhq-1871.jpg', 'ffhq-1332.jpg', 'ffhq-0992.jpg', 'ffhq-0945.jpg', 'ffhq-1252.jpg', 'ffhq-0414.jpg', 'ffhq-1786.jpg', 'ffhq-1962.jpg', 'ffhq-1751.jpg', 'ffhq-0881.jpg', 'ffhq-1547.jpg', 'ffhq-0922.jpg', 'ffhq-0705.jpg', 'ffhq-1143.jpg', 'ffhq-0506.jpg', 'ffhq-1195.jpg', 'ffhq-0062.jpg', 'ffhq-0658.jpg', 'ffhq-0894.jpg', 'ffhq-1591.jpg', 'ffhq-0314.jpg', 'ffhq-1744.jpg', 'ffhq-1750.jpg', 'ffhq-1988.jpg', 'ffhq-1975.jpg', 'ffhq-0458.jpg', 'ffhq-1593.jpg', 'ffhq-1222.jpg', 'ffhq-0100.jpg', 'ffhq-0935.jpg', 'ffhq-0048.jpg', 'ffhq-0289.jpg', 'ffhq-1815.jpg', 'ffhq-1801.jpg', 'ffhq-0505.jpg', 'ffhq-1633.jpg', 'ffhq-1800.jpg', 'ffhq-0713.jpg', 'ffhq-0075.jpg', 'ffhq-0459.jpg', 'ffhq-1960.jpg', 'ffhq-1784.jpg', 'ffhq-1970.jpg', 'ffhq-1794.jpg', 'ffhq-1757.jpg', 'ffhq-0663.jpg', 'ffhq-1555.jpg', 'ffhq-1390.jpg', 'ffhq-0071.jpg', 'ffhq-0717.jpg', 'ffhq-1409.jpg', 'ffhq-0515.jpg', 'ffhq-0501.jpg', 'ffhq-1145.jpg', 'ffhq-0500.jpg', 'ffhq-0514.jpg', 'ffhq-1187.jpg', 'ffhq-1346.jpg', 'ffhq-1352.jpg', 'ffhq-0064.jpg', 'ffhq-0892.jpg', 'ffhq-0138.jpg', 'ffhq-0886.jpg', 'ffhq-1540.jpg', 'ffhq-1783.jpg', 'ffhq-0112.jpg', 'ffhq-0933.jpg', 'ffhq-0066.jpg', 'ffhq-0072.jpg', 'ffhq-1807.jpg', 'ffhq-0270.jpg', 'ffhq-0258.jpg', 'ffhq-1152.jpg', 'ffhq-0503.jpg', 'ffhq-0715.jpg', 'ffhq-1392.jpg', 'ffhq-0891.jpg', 'ffhq-1219.jpg', 'ffhq-1580.jpg', 'ffhq-0339.jpg', 'ffhq-0311.jpg', 'ffhq-1943.jpg', 'ffhq-1770.jpg', 'ffhq-1994.jpg', 'ffhq-1214.jpg', 'ffhq-0136.jpg', 'ffhq-0527.jpg', 'ffhq-0651.jpg', 'ffhq-1567.jpg', 'ffhq-0862.jpg', 'ffhq-0453.jpg', 'ffhq-1995.jpg', 'ffhq-0484.jpg', 'ffhq-1956.jpg', 'ffhq-0323.jpg', 'ffhq-0690.jpg', 'ffhq-0848.jpg', 'ffhq-1559.jpg', 'ffhq-0900.jpg', 'ffhq-0096.jpg', 'ffhq-1363.jpg', 'ffhq-0055.jpg', 'ffhq-0041.jpg', 'ffhq-1175.jpg', 'ffhq-0518.jpg', 'ffhq-1821.jpg', 'ffhq-0281.jpg', 'ffhq-1809.jpg', 'ffhq-1362.jpg', 'ffhq-0120.jpg', 'ffhq-1564.jpg', 'ffhq-1202.jpg', 'ffhq-0493.jpg', 'ffhq-1789.jpg', 'ffhq-1986.jpg', 'ffhq-0454.jpg', 'ffhq-0681.jpg', 'ffhq-0871.jpg', 'ffhq-0642.jpg', 'ffhq-1414.jpg', 'ffhq-1831.jpg', 'ffhq-1158.jpg', 'ffhq-0509.jpg', 'ffhq-0535.jpg', 'ffhq-1830.jpg', 'ffhq-0051.jpg', 'ffhq-0737.jpg', 'ffhq-0086.jpg', 'ffhq-1993.jpg', 'ffhq-1944.jpg', 'ffhq-1985.jpg', 'ffhq-1577.jpg', 'ffhq-0912.jpg', 'ffhq-1359.jpg', 'ffhq-0721.jpg', 'ffhq-1615.jpg', 'ffhq-0293.jpg', 'ffhq-1370.jpg', 'ffhq-0734.jpg', 'ffhq-0085.jpg', 'ffhq-1562.jpg', 'ffhq-0132.jpg', 'ffhq-1748.jpg', 'ffhq-0431.jpg', 'ffhq-1505.jpg', 'ffhq-0155.jpg', 'ffhq-0960.jpg', 'ffhq-1471.jpg', 'ffhq-0009.jpg', 'ffhq-0747.jpg', 'ffhq-0753.jpg', 'ffhq-0592.jpg', 'ffhq-1883.jpg', 'ffhq-0593.jpg', 'ffhq-0154.jpg', 'ffhq-0829.jpg', 'ffhq-0815.jpg', 'ffhq-1074.jpg', 'ffhq-0381.jpg', 'ffhq-1909.jpg', 'ffhq-1704.jpg', 'ffhq-1738.jpg', 'ffhq-0432.jpg', 'ffhq-0181.jpg', 'ffhq-1512.jpg', 'ffhq-0142.jpg', 'ffhq-0744.jpg', 'ffhq-1658.jpg', 'ffhq-1881.jpg', 'ffhq-1659.jpg', 'ffhq-1665.jpg', 'ffhq-0209.jpg', 'ffhq-1856.jpg', 'ffhq-1301.jpg', 'ffhq-0792.jpg', 'ffhq-1275.jpg', 'ffhq-1261.jpg', 'ffhq-1077.jpg', 'ffhq-1936.jpg', 'ffhq-0382.jpg', 'ffhq-1729.jpg', 'ffhq-0379.jpg', 'ffhq-0812.jpg', 'ffhq-0621.jpg', 'ffhq-0153.jpg', 'ffhq-0635.jpg', 'ffhq-1271.jpg', 'ffhq-0542.jpg', 'ffhq-0230.jpg', 'ffhq-1304.jpg', 'ffhq-0032.jpg', 'ffhq-1489.jpg', 'ffhq-1072.jpg', 'ffhq-1728.jpg', 'ffhq-1099.jpg', 'ffhq-0434.jpg', 'ffhq-0193.jpg', 'ffhq-1528.jpg', 'ffhq-1500.jpg', 'ffhq-0971.jpg', 'ffhq-0024.jpg', 'ffhq-0756.jpg', 'ffhq-1312.jpg', 'ffhq-0597.jpg', 'ffhq-0226.jpg', 'ffhq-0554.jpg', 'ffhq-1111.jpg', 'ffhq-1688.jpg', 'ffhq-1844.jpg', 'ffhq-1461.jpg', 'ffhq-0970.jpg', 'ffhq-0804.jpg', 'ffhq-1071.jpg', 'ffhq-0390.jpg']
+
+for (var i = 0; i < stimuli.length; i++) {
+  stimuli[i] = STATIC_DIR + 'faces_resized/' + stimuli[i]
+}
+
+// randomize
+stimuli = jsPsych.randomization.shuffle(stimuli);
+
+for (var i = 0; i < labels.length; i++) {
+  labels[i] = '<p id = "inst">' + labels[i] + '</p>'
+}
+labels = jsPsych.randomization.shuffle(labels);
+
+console.log(stimuli);
+
+/* - - - - INPUT - - - - */
+
+// demographic information
+var survey = {
+  type: "survey-text",
+  questions: [{prompt: "What is your age?"}, {prompt: "What is your gender? (enter 'm' for male, 'f' for female, or 'o' for other)"}],
+};
+  
+/* - - - - INSTRUCTIONS - - - - */
+
+var welcome_block = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">This experiment involves a computer-based task and a short questionnaire about your demographic information. Find a quiet environment to complete this experiment in. Overall, the task should take approximately 15 minutes to complete.</p>'
+};
+
+var welcome_block2 = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">In this task, you will be presented with a series of faces, flashed rapidly on the screen (study phase). You will then be asked to complete a maths task. After the maths task, you will be presented with another series of faces which you will be tested on (recognition phase and associative recognition phase). There will be three blocks with each block containing two study phases and two test phases. After you have rated the faces in each test phase, the task will move on automatically.</p>'
+};
+
+var welcome_block3 = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">In each recognition phase phase, you will be asked to determine whether or not you have seen each face before (from the previous study phase). You will then be asked to rate your confidence in that answer using the scale below.</p><p id="inst">1 - definitely, 2 - probably., 3 - maybe ---  7- maybe not, 8 - probably not, 9 - definitely not</p><p id="inst">On each associative recognition phase, you will be asked to determine whether or not each face is guilty or innocent (from the previous study phase). You will then be asked to rate your confidence in that answer using the scale below.</p><p id="inst">1= def. guilty, 2= prob. guilty, 3= maybe guilty, 7= maybe innocent, 8= prob. innocent, 9= def. innocent</p>'
+};
+
+var welcome_block4 = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">Your job is to respond as accurately as you can. If the task crashes or stops half-way through, just refresh the page to restart the experiment.</p><p id ="inst">Press space to continue.</p>'
+};
+
+var pre_study_list = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">You are about to begin the study phase.</p><p id="inst">Press any key to begin.</p>'
+};
+
+var pre_math_task = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">You are about to begin the math task. You will need the 1 and 0 keys.</p><p id = "inst">Press any key to begin.</p>'
+}
+
+var pre_test_list = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">You are about to begin the test phase. You will need to use keys 1-3 and 7-9.</p><p id="inst">Press any key to begin.</p>'
+};
+
+var pre_test_list_assoc = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">You are about to begin the associative recognition test You will need to use keys 1-3 and 7-9.</p><p id="inst">Press any key to begin.</p>'
+};
+
+var next = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">We are about to commence the next set of study phase and test phase. Please press any key when you are ready'
+}
+
+var finished = {
+  type: 'html-keyboard-response',
+  stimulus: '<p id="inst">The experiment is now over. Thank you for your participation! You can exit this page at any time.</p>'
+}
+
+// declare the timeline with most things you need
+var timeline = [welcome_block, welcome_block2, welcome_block3, survey, welcome_block4];
+
+/* - - - - PREPARE CONDITIONS - - - - */
+
+// each condition is prepared as a dictionary so you can shuffle the conds array and simultaneously shuffle all the parameters
+conds_array = [];
+for (var i = 0; i < conds.length; i++) {
+  conds_dict = {
+    "cond": conds[i],
+    "duration": durations[i],
+    "delay_time": delay_times[i],
+    "LL": LLs[i]
+  }
+  conds_array.push(conds_dict);
+}
+
+/* - - - - RECOGNITION MEMORY - - - - */
+
+// experiment loop
+
+for (var b = 0; b < nBlocks; b++) {
+  block = b + 1;
+  
+  console.log('In the block loop...');
+  console.log(conds)
+  
+  conds = jsPsych.randomization.shuffle(conds_array)
+  
+  for (var c = 0; c < conds.length; c++) {
+
+    cond_dict = conds[c];
+    cond = cond_dict['cond'];
+    LL = cond_dict['LL'];
+    duration = cond_dict['duration'];
+    delay_time = cond_dict['delay_time'];
+    
+    // assemble targets and lures from "stimuli"
+    targets = [];
+    targetLabels = [];
+    
+    for (var i = 0; i < LL; i++) {
+      stimulus = stimuli.pop();
+      
+      //innocent versus guilty labels
+      if (i < LL/ 2){
+        label = 'INNOCENT'
+      }
+      else {
+        label = 'GUILTY'
+      }
+      caption = '<p id="inst">' + label + '</p>'
+      
+      target = {
+        type: 'target',
+        trial: i,
+        label: label,
+        caption: caption,
+        stimulus: stimulus
+      }
+      targets.push(target);
+      targetLabels.push(label);
+    }
+    targets = jsPsych.randomization.shuffle(targets);
+  
+    // lures for item recognition
+    lures = [];
+    for (var i = 0; i < LL / 2; i++) {
+      stimulus = stimuli.pop();
+      lure = {
+        type: 'lure',
+        stimulus: stimulus
+      }
+      lures.push(lure);
+    }
+  
+    // assemble the test list from the targets and lures
+    test_list = targets.concat(lures);
+    test_list = jsPsych.randomization.shuffle(test_list);
+    
+    // all of the targets are tested for the associative phase
+    test_list_assoc = targets;
+    test_list_assoc = jsPsych.randomization.shuffle(test_list_assoc);
+    
+    console.log('test_list_assoc');
+    console.log(test_list_assoc);
+  
+    for (var i = 0; i < test_list.length; i++) {
+      test_list[i]['trial'] = i;
+    }
+    for (var i = 0; i < test_list_assoc.length; i++) {
+      test_list_assoc[i]['trial'] = i;
+    }
+  
+    // study phase
+    timeline.push(pre_study_list);
+    timeline.push({
+      timeline_variables: targets,
+      timeline: [
+        {
+          description: 'study_phase',
+          type: 'image-keyboard-response',
+          trial_duration: duration,
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          prompt: jsPsych.timelineVariable('caption'),
+          choices: jsPsych.NO_KEYS,
+          data: {
+            phase: 'study_list', 
+            cond: cond,
+            block: block,
+            trial: jsPsych.timelineVariable('trial'),
+            face: jsPsych.timelineVariable('stimulus'),
+            label: jsPsych.timelineVariable('label')
+          }
+        }
+      ]
+    })
+    
+    
+    // distracter task: only do it if delay_time is greater than zero!
+    if (delay_time > 0) {
+      timeline.push(pre_math_task);
+      timeline.push({
+        description: 'math_task',
+        type: 'math-distractor',
+        duration: delay_time,
+        data: {
+          phase: 'delay',
+          cond: cond,
+          block: block
+        }
+      })  
+    }
+  
+    // item recognition test
+    timeline.push(pre_test_list);
+    timeline.push({
+      timeline_variables: test_list,
+      timeline: [
+        {
+          description: 'item-test',
+          type: 'image-keyboard-response',
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          choices: [49,50,51,55,56,57],
+          on_finish: function(data) {
+            // what different responses indicate
+            if (data.key_press == 49){
+              data.response = 1;
+              data.oldnew = 1;
+              data.conf = 3;
+            }
+            if (data.key_press == 50){
+              data.response = 2;
+              data.oldnew = 1;
+              data.conf = 2;
+            }
+            if (data.key_press == 51){
+              data.response = 3;
+              data.oldnew = 1;
+              data.conf = 1;
+            }
+            if (data.key_press == 55){
+              data.response = 4;
+              data.oldnew = 0;
+              data.conf = 1;
+            }
+            if (data.key_press == 56){
+              data.response = 5;
+              data.oldnew = 0;
+              data.conf = 2;
+            }
+            if (data.key_press == 57){
+              data.response = 6;
+              data.oldnew = 0;
+              data.conf = 3;
+            }
+            if (data.oldnew == 1 && data.type == 'target'){
+              data.correct = 1;
+            }
+            else if (data.oldnew == 0 && data.type == 'lure'){
+              data.correct = 1;
+            }
+            else {
+              data.correct = 0;
+            } 
+          },
+          prompt: "<p>Have you seen this face before (from the previous study phase)?</p><p>1= definitely, 2= probably, 3= maybe, 7= maybe not, 8= probably not, 9= definitely not</p>",
+          data: {
+              phase: 'item_test',
+              type: jsPsych.timelineVariable('type'),
+              cond: cond,
+              block: block,
+              trial: jsPsych.timelineVariable('trial'),
+              face: jsPsych.timelineVariable('stimulus')
+          }
+        }
+      ]
+    })
+      
+    // associative recognition test
+    
+    timeline.push(pre_test_list_assoc);
+    timeline.push({
+      timeline_variables: test_list_assoc,
+      timeline: [
+        {
+          description: 'test_phase',
+          type: 'image-keyboard-response',
+          stimulus: jsPsych.timelineVariable('stimulus'),
+          choices: [49,50,51,55,56,57],
+          on_finish: function(data) {
+            // what different responses indicate
+            if (data.key_press == 49){
+              data.response = 1;
+              data.oldnew = 1;
+              data.conf = 3;
+            }
+            if (data.key_press == 50){
+              data.response = 2;
+              data.oldnew = 1;
+              data.conf = 2;
+            }
+            if (data.key_press == 51){
+              data.response = 3;
+              data.oldnew = 1;
+              data.conf = 1;
+            }
+            if (data.key_press == 55){
+              data.response = 4;
+              data.oldnew = 0;
+              data.conf = 1;
+            }
+            if (data.key_press == 56){
+              data.response = 5;
+              data.oldnew = 0;
+              data.conf = 2;
+            }
+            if (data.key_press == 57){
+              data.response = 6;
+              data.oldnew = 0;
+              data.conf = 3;
+            }
+            if (data.oldnew == 1 && data.type == 'intact'){
+              data.correct = 1;
+            }
+            else if (data.oldnew == 0 && data.type == 'rearranged'){
+              data.correct = 1;
+            }
+            else {
+              data.correct = 0;
+            } 
+          },
+          prompt: "<p>Was this face from the previous study phase GUILTY or INNOCENT?</p><p>1= def. guilty, 2= prob. guilty, 3= maybe guilty, 7= maybe innocent, 8= prob. innocent, 9= def. innocent</p>",
+          data: {
+              phase: 'assoc_test',
+              type: jsPsych.timelineVariable('type'),
+              cond: cond,
+              block: block,
+              trial: jsPsych.timelineVariable('trial'),
+              face: jsPsych.timelineVariable('stimulus'),
+              label: jsPsych.timelineVariable('label')
+          }
+        }
+      ]     
+    })
+    // add in the next
+    if (c < conds.length - 1){
+      timeline.push(next);
+    }
+  }
+}
+//timeline.push(finished);
+/* - - - - EXECUTION - - - - */
+
+jsPsych.init({
+  timeline: timeline,
+  on_finish: function() {
+    //jsPsych.data.get().ignore(['stimulus', 'internal_node_id', 'key_press', 'trial_type']).localSave('csv', 'testData.csv');
+    //var all_data = jsPsych.data.get().json();
+    _send_task_data(all_data);
+    //send_debrief();
+  },
+  default_iti: 250
+})
+
+</script>
+
+{% endblock %}
