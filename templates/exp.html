@@ -378,7 +378,7 @@ jsPsych.init({
   timeline: timeline,
   on_finish: function() {
     //jsPsych.data.get().ignore(['stimulus', 'internal_node_id', 'key_press', 'trial_type']).localSave('csv', 'testData.csv');
-    //var all_data = jsPsych.data.get().json();
+    var all_data = jsPsych.data.get().json();
     _send_task_data(all_data);
     //send_debrief();
   },
